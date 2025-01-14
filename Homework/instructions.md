@@ -136,7 +136,7 @@ Before you begin, ensure you have the following:
 ## Step 9: Share Your Docker Hub Repository
 
 1. Copy the URL of your Docker Hub repository.
-2. Share the URL with your instructor or teammates to showcase your work.
+2. Share the URL to showcase your work.
 
 ---
 
