@@ -1,8 +1,5 @@
 # Docker Commands: A Hands-On Guide
 
-This guide introduces the essential Docker commands, how to use them effectively, and examples to try during the session. Follow along to understand Docker’s potential and get comfortable working with containers.
-
----
 
 ## **Getting Started with Docker**
 
