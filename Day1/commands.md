@@ -294,5 +294,3 @@ docker logs mynginx
 This will display the logs of the `mynginx` container. You can use the `-f` flag to follow the logs in real-time.
 
 ---
-
-
