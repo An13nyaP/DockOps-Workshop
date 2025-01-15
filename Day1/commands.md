@@ -458,4 +458,75 @@ if __name__ == "__main__":
 - Expected Output:
   The calculator will prompt you for operations and numbers interactively.
 
+## 15. **Publishing a Docker Image**
+
+### **1. Create a Docker Hub Account**
+If you don’t already have a Docker Hub account, create one at [Docker Hub](https://hub.docker.com/). 
+
 ---
+
+### **2. Login to Docker Hub**
+Log in to Docker Hub from the CLI:
+```bash
+docker login
+```
+- Enter your Docker Hub username and password when prompted.
+- Successful login will display a message: `Login Succeeded`.
+
+---
+
+### **3. Tag the Image**
+Docker Hub requires images to be tagged with the format `<username>/<repository>:<tag>`. Tag your image appropriately:
+```bash
+docker tag my-docker-image <your_dockerhub_username>/<repository_name>:<tag>
+```
+
+### Example:
+```bash
+docker tag my-docker-image ananya123/my-first-image:v1.0
+```
+- `my-docker-image`: The name of your locally built image.
+- `ananya123`: Replace with your Docker Hub username.
+- `my-first-image`: The repository name where you want to publish the image.
+- `v1.0`: Tag version (optional; defaults to `latest` if omitted).
+
+---
+
+### **4. Push the Image**
+Push the tagged image to Docker Hub:
+```bash
+docker push <your_dockerhub_username>/<repository_name>:<tag>
+```
+
+### Example:
+```bash
+docker push ananya123/my-first-image:v1.0
+```
+
+---
+
+### **5. Verify the Published Image**
+- Go to your Docker Hub profile ([Docker Hub](https://hub.docker.com/)) and check for the repository and the uploaded image.
+
+---
+
+### **6. Run the Published Image from Docker Hub**
+You can now pull and run the image from Docker Hub on any machine:
+```bash
+docker pull <your_dockerhub_username>/<repository_name>:<tag>
+docker run -it <your_dockerhub_username>/<repository_name>:<tag>
+```
+
+### Example:
+```bash
+docker pull ananya123/my-first-image:v1.0
+docker run -it ananya123/my-first-image:v1.0
+```
+
+---
+
+### Notes:
+- Replace `<your_dockerhub_username>` with your actual username.
+- Make sure your image works correctly before pushing it to Docker Hub.
+- For private repositories, ensure your Docker Hub account or the repository allows access.
+
