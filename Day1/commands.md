@@ -1,214 +1,127 @@
-# Docker Commands: A Hands-On Guide
+# Docker Commands: Step-by-Step Exploration
 
+## 1. Checking Your Docker Installation
 
-## **Getting Started with Docker**
-
-### **1. Check Docker Installation**
-Command:
+### Command:
 ```bash
-docker --version
+docker version
 ```
-Explanation:
-Checks if Docker is installed and displays the installed version.
+### Purpose:
+Verify that Docker is installed and check the version of the client and server.
 
----
-
-### **2. Pulling an Image**
-Command:
-```bash
-docker pull <image-name>
-```
-Example:
-```bash
-docker pull nginx
-```
-Explanation:
-Downloads the specified image (e.g., Nginx) from Docker Hub to your local system.
-
----
-
-### **3. Listing Available Images**
-Command:
-```bash
-docker images
-```
-Explanation:
-Shows all Docker images present on your local machine, including the repository name, tag, image ID, and size.
-
----
-
-### **4. Running a Container**
-Command:
-```bash
-docker run <image-name>
-```
-Example:
-```bash
-docker run nginx
-```
-Explanation:
-Starts a container from the specified image. For Nginx, it will start a default web server.
-
-To run in detached mode:
-```bash
-docker run -d nginx
+### Example Output:
+```plaintext
+Client: Docker Engine - Community
+ Version: 20.10.8
+ API version: 1.41
+ Go version: go1.16.6
+Server: Docker Engine - Community
+ Version: 20.10.8
+ API version: 1.41 (minimum version 1.12)
 ```
 
 ---
 
-### **5. Listing Running Containers**
-Command:
+## 2. Pulling and Running a Basic Ubuntu Image
+
+### Pulling an Image:
+```bash
+docker pull ubuntu
+```
+### Purpose:
+Download the latest Ubuntu image from Docker Hub to your local machine.
+
+### Running a Container:
+```bash
+docker run -it ubuntu
+```
+### Purpose:
+Start an interactive session in an Ubuntu container.
+
+### Explanation:
+- `-it`: Interactive terminal mode.
+- Inside the container, you can run commands like `ls`, `pwd`, or `apt update` to explore the environment.
+
+---
+
+## 3. Listing Containers and Images
+
+### Listing Running Containers:
 ```bash
 docker ps
 ```
-Explanation:
-Displays all active containers. Includes container ID, image, status, and port mapping.
+### Purpose:
+See a list of containers currently running on your system.
 
-To see all containers (active + stopped):
+### Listing All Containers (Running and Stopped):
 ```bash
 docker ps -a
 ```
 
----
-
-### **6. Stopping a Container**
-Command:
+### Listing Images:
 ```bash
-docker stop <container-id>
+docker images
 ```
-Example:
-```bash
-docker stop abc123
-```
-Explanation:
-Stops a running container. Replace `<container-id>` with the actual ID from `docker ps`.
+### Purpose:
+Display all images available locally.
 
 ---
 
-### **7. Removing a Container**
-Command:
-```bash
-docker rm <container-id>
-```
-Explanation:
-Deletes a stopped container. Use `docker ps -a` to identify stopped containers.
+## 4. Executing Commands Inside a Container
 
-To remove all stopped containers:
+### Command:
 ```bash
-docker container prune
+docker exec -it <container_id> bash
 ```
+### Purpose:
+Run commands inside a running container interactively.
+
+### Explanation:
+- `-it`: Opens an interactive terminal session.
+- Replace `<container_id>` with the ID or name of the running container.
+
+### Example:
+Start an Nginx container:
+```bash
+docker run -d --name mynginx nginx
+```
+Check files inside it:
+```bash
+docker exec -it mynginx bash
+ls /usr/share/nginx/html
+```
+
+### Detached Mode:
+To keep a container running in the background:
+```bash
+docker run -d ubuntu
+```
+The container runs without tying up your terminal.
 
 ---
 
-## **Exploring Images and Containers**
+## 5. Exploring Data Isolation Between Containers
 
-### **8. Building an Image from a Dockerfile**
-Command:
+### Step 1: Create Two Separate Containers:
 ```bash
-docker build -t <image-name>:<tag> .
+docker run -it --name container1 ubuntu
 ```
-Example:
 ```bash
-docker build -t myapp:1.0 .
-```
-Explanation:
-Builds a Docker image from a `Dockerfile` in the current directory. Assigns the specified name and tag.
-
----
-
-### **9. Inspecting a Container**
-Command:
-```bash
-docker inspect <container-id>
-```
-Explanation:
-Displays detailed information about the container, including network settings, environment variables, and mount points.
-
----
-
-### **10. Executing Commands Inside a Container**
-Command:
-```bash
-docker exec -it <container-id> <command>
-```
-Example:
-```bash
-docker exec -it abc123 bash
-```
-Explanation:
-Opens an interactive Bash shell inside the running container.
-
----
-
-## **Working with Multiple Containers**
-
-### **11. Running Multiple Containers**
-Command:
-```bash
-docker run -d --name <container-name> <image-name>
-docker run -d --name app2 nginx
-```
-Explanation:
-Starts multiple containers in detached mode. Each container can be given a unique name for easier management.
-
----
-
-### **12. Port Mapping**
-Command:
-```bash
-docker run -d -p <host-port>:<container-port> <image-name>
-```
-Example:
-```bash
-docker run -d -p 8080:80 nginx
-```
-Explanation:
-Maps the container’s port (e.g., 80) to a port on your machine (e.g., 8080). You can access the containerized application at `http://localhost:8080`.
-
----
-
-### **13. Environment Variables**
-Command:
-```bash
-docker run -d -e <key>=<value> <image-name>
-```
-Example:
-```bash
-docker run -d -e APP_ENV=production nginx
-```
-Explanation:
-Sets environment variables for the container at runtime. Use `docker inspect` to verify the variables.
-
----
-
-## **Advanced Concepts**
-
-### **14. Container Logs**
-Command:
-```bash
-docker logs <container-id>
-```
-Explanation:
-Fetches logs generated by the container. Useful for debugging.
-
-To stream logs in real time:
-```bash
-docker logs -f <container-id>
+docker run -it --name container2 ubuntu
 ```
 
----
-
-### **15. Removing Images**
-Command:
+### Step 2: Create a File in Container 1:
+Inside `container1`, run:
 ```bash
-docker rmi <image-id>
-```
-Explanation:
-Deletes a Docker image. The image must not be in use by any running containers.
-
-To remove unused images:
-```bash
-docker image prune
+echo "Hello from Container 1" > /hello.txt
 ```
 
----
+### Step 3: Check for the File in Container 2:
+Inside `container2`, run:
+```bash
+ls /hello.txt
+```
+
+### Observation:
+The file is not present in `container2`, demonstrating data isolation between containers.
+
