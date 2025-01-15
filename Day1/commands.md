@@ -125,12 +125,6 @@ ls /hello.txt
 ### Observation:
 The file is not present in `container2`, demonstrating data isolation between containers.
 
-Here's the continuation of your `commands.md` file, following the same style and structure you've provided:
-
-```markdown
-# Docker Commands: Step-by-Step Exploration
-
----
 
 ## 6. **Port Mapping in Docker**
 
@@ -301,22 +295,4 @@ This will display the logs of the `mynginx` container. You can use the `-f` flag
 
 ---
 
-## 15. **Scaling a Service with Docker Compose**
-
-### Command:
-```bash
-docker-compose up --scale <service_name>=<number_of_instances>
-```
-### Purpose:
-Scale up a service in a Docker Compose environment to run multiple instances of the same service.
-
-### Example:
-```bash
-docker-compose up --scale web=3
-```
-### Explanation:
-This command scales the `web` service to 3 instances, effectively running 3 containers of the web service in the Docker Compose setup.
-
----
-```
 
