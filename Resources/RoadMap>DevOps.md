@@ -1,7 +1,4 @@
 
-
----
-
 ### **1. Learn the Basics of DevOps**
 - **What is DevOps?**
   - Understand the DevOps culture, CI/CD, and Infrastructure as Code (IaC).
