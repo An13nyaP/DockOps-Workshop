@@ -294,3 +294,168 @@ docker logs mynginx
 This will display the logs of the `mynginx` container. You can use the `-f` flag to follow the logs in real-time.
 
 ---
+---
+
+## 15. **Dockerfile: Building Your Own Docker Images**
+
+### What is a Dockerfile?
+A **Dockerfile** is a script-like text file containing instructions to automate the process of building a Docker image. It specifies:
+- The base image to use.
+- Dependencies to install.
+- Files to copy into the container.
+- Commands to run inside the container.
+
+### Structure of a Dockerfile:
+Here's the general structure of a Dockerfile:
+
+1. **Base Image**: Specify a starting point for your image.
+   ```dockerfile
+   FROM <base_image>
+   ```
+
+2. **Maintainer (Optional)**: Add metadata about the creator.
+   ```dockerfile
+   LABEL maintainer="your_email@example.com"
+   ```
+
+3. **Environment Variables (Optional)**: Define default variables.
+   ```dockerfile
+   ENV APP_ENV=production
+   ```
+
+4. **Working Directory**: Set the directory inside the container.
+   ```dockerfile
+   WORKDIR /app
+   ```
+
+5. **Copy Files**: Copy files from your system to the container.
+   ```dockerfile
+   COPY <source> <destination>
+   ```
+
+6. **Run Commands**: Execute commands during the image build process.
+   ```dockerfile
+   RUN <command>
+   ```
+
+7. **Expose Ports**: Define ports to be accessible.
+   ```dockerfile
+   EXPOSE <port_number>
+   ```
+
+8. **Command to Run**: Specify the default command to execute when the container starts.
+   ```dockerfile
+   CMD ["executable", "arg1", "arg2"]
+   ```
+
+---
+
+### Example 1: "Hello from DockOps"
+
+#### 1. **Dockerfile**
+```dockerfile
+# Use the official Python base image
+FROM python:3.9-slim
+
+# Add metadata
+LABEL maintainer="dockops@example.com"
+
+# Set working directory
+WORKDIR /app
+
+# Copy the Python script to the working directory
+COPY hello.py .
+
+# Command to run the Python script
+CMD ["python", "hello.py"]
+```
+
+#### 2. **hello.py**
+```python
+print("Hello from DockOps!")
+```
+
+#### 3. **Build and Run**
+- Build the image:
+  ```bash
+  docker build -t hello-dockops .
+  ```
+- Run the container:
+  ```bash
+  docker run hello-dockops
+  ```
+- Expected Output:
+  ```plaintext
+  Hello from DockOps!
+  ```
+
+---
+
+### Example 2: A Simple Calculator
+
+#### 1. **Dockerfile**
+```dockerfile
+# Use the official Python base image
+FROM python:3.9-slim
+
+# Add metadata
+LABEL maintainer="dockops@example.com"
+
+# Set working directory
+WORKDIR /app
+
+# Copy the calculator script to the working directory
+COPY calculator.py .
+
+# Install any required Python packages (if needed)
+RUN pip install --no-cache-dir numpy
+
+# Command to run the calculator script
+CMD ["python", "calculator.py"]
+```
+
+#### 2. **calculator.py**
+```python
+def calculator():
+    print("Welcome to the Simple Calculator!")
+    while True:
+        try:
+            operation = input("Choose operation (+, -, *, / or 'q' to quit): ").strip()
+            if operation.lower() == 'q':
+                print("Goodbye!")
+                break
+            num1 = float(input("Enter first number: "))
+            num2 = float(input("Enter second number: "))
+            if operation == '+':
+                print(f"Result: {num1 + num2}")
+            elif operation == '-':
+                print(f"Result: {num1 - num2}")
+            elif operation == '*':
+                print(f"Result: {num1 * num2}")
+            elif operation == '/':
+                if num2 != 0:
+                    print(f"Result: {num1 / num2}")
+                else:
+                    print("Error: Division by zero!")
+            else:
+                print("Invalid operation!")
+        except ValueError:
+            print("Invalid input! Please enter numeric values.")
+
+if __name__ == "__main__":
+    calculator()
+```
+
+#### 3. **Build and Run**
+- Build the image:
+  ```bash
+  docker build -t simple-calculator .
+  ```
+- Run the container:
+  ```bash
+  docker run -it simple-calculator
+  ```
+- Expected Output:
+  The calculator will prompt you for operations and numbers interactively.
+
+---
